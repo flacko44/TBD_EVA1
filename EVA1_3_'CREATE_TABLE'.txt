@@ -1,0 +1,199 @@
+EVA1_3_'CREATE TABLE'
+
+Relación -> Se ve como una tabla de valores
+	    Contiene un conjunto de filas
+	     -> Cada fila tiene elementos que representan a una entidad real
+	       -> En el modelo formal, las filas se llaman tuplas
+             -> Cada columna tiene un encabezado que representa sus items
+	       -> En el modelo formal, el encabezado se llama atributo
+
+Key (Llave) -> Valor que identifica únicamente a una fila en la tabla
+Llave artificial -> (…)
+
+NORMALIZACION Y FORMAS NORMALES
+
+Reducen la cantidad de información en una bdd eliminando datos redundantes.
+
+1st -> ATOMICIDAD: Valor que no puede ser dividido en piezas más pequeñas
+	En una tabla en 1FN todos los valores son atómicos y funcionalmente tienen que depender en una llave primaria, sin contener grupos repetidos (datos duplicados en la misma columna).
+
+2nd -> REMOVER DEPENDENCIAS PARCIALES.
+	-> Registros no deben de depender en algo que no sea la llave primaria.
+	-> Crea tablas separadas por cada conjunto de datos relacionados > Identificar cada dato con su propia llave primaria > Es necesario introducir una nueva relación entre las tablas > se crean llaves foráneas.
+	-> Integridad referencial: cada valor de una llave foránea debe existir como llave primaria en otra tabla
+
+3rd -> REMOVER DEPENDENCIAS TRANSITIVAS (IF A>B, AND B>C, THEN A>C)
+	-> Cada atributo no debe depender de otro atributo no primario, cada atributo debe representar a la llave
+
+
+EXERCISE 1FN
+
+Roll no. |	Name	|	Subject |
+100		Faiz		JAVA
+101		Rama		C++
+101 		Rama		JAVA
+102		Hitesh		ANDROID
+103		Sultan		C
+103		Sultan		C++
+106		Mahendra 	PHP
+
+EXERCISE 2FN
+
+Students			Professor
+| IDSt |  LastName  |  		| IDProf | Prof       |  Grade  | IDSt
+  1	  Mueller		  1	   Schmid         6	  1
+  2	  Meier			  2	   Borner         4 	  2
+  3	  Tobler		  3	   Bernasconi     5 	  3
+
+EXERCISE 3FN
+
+Orders					Customers
+| Order_ID | Order Date | Cust_ID |	| Cust_ID | Cust_Name 		| Cust Address |	
+  1006	     10/24/2004    2			2   Value Furniture	  Plano, TX
+  1007       10/25/2004    6			6   Furniture Gallery	  Boulder, CO
+  1008       11/01/2004    2
+
+Employee					Job
+| EmpID | Name  | State Code |			| Job_Code | Job	| EmpID
+ E001     Alice		26			   JO1	     Chef	   E001
+ E002     Bob           56			   JO2	     Waiter	   E002
+ E003     Alice         56			   JO3       Bartender     E003
+State
+| State Code | Home_State |
+ 26		Michigan
+ 56	        Wyoming
+======================================================================================
+
+ySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| t1                 |
+| world              |
++--------------------+
+7 rows in set (0.0110 sec)
+ MySQL  localhost:3306 ssl  SQL > use t1;
+Default schema set to `t1`.
+Fetching global names, object names from `t1` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  t1  SQL > show tables;
+Empty set (0.0090 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > create table Persona(
+                                   -> id_persona int not null auto_increment key,
+                                   -> nombre varchar(50) not null,
+                                   -> ap_paterno varchar(50) not null,
+                                   -> ap_materno varchar(50) null,
+                                   -> fecha_nac date not null);
+Query OK, 0 rows affected (0.0692 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > show tables;
++--------------+
+| Tables_in_t1 |
++--------------+
+| persona      |
++--------------+
+1 row in set (0.0171 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > show create table t1;
+ERROR: 1146 (42S02): Table 't1.t1' doesn't exist
+ MySQL  localhost:3306 ssl  t1  SQL > show create table Persona:
+                                   -> show create table Persona;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ':
+show create table Persona' at line 1
+ MySQL  localhost:3306 ssl  t1  SQL > show create table Persona;
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table                                                                                                                                                                                                                                                                                                     |
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Persona | CREATE TABLE `persona` (
+  `id_persona` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  `ap_paterno` varchar(50) NOT NULL,
+  `ap_materno` varchar(50) DEFAULT NULL,
+  `fecha_nac` date NOT NULL,
+  PRIMARY KEY (`id_persona`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0093 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > desc persona;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| id_persona | int         | NO   | PRI | NULL    | auto_increment |
+| nombre     | varchar(50) | NO   |     | NULL    |                |
+| ap_paterno | varchar(50) | NO   |     | NULL    |                |
+| ap_materno | varchar(50) | YES  |     | NULL    |                |
+| fecha_nac  | date        | NO   |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.0162 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > drop table persona;
+Query OK, 0 rows affected (0.0224 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > create table Persona( id_persona int not null auto_increment key, nombre varchar(50) not null, ap_paterno varchar(50) not null, ap_materno varchar(50) null, fecha_nac date not null);
+Query OK, 0 rows affected (0.0272 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > show tables;
++--------------+
+| Tables_in_t1 |
++--------------+
+| persona      |
++--------------+
+1 row in set (0.0024 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > insert into persona
+                                   -> value(1, "Diego", "Escarcega", "Avila", "2005-04-04");
+Query OK, 1 row affected (0.0123 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > select * from Persona;
++------------+--------+------------+------------+------------+
+| id_persona | nombre | ap_paterno | ap_materno | fecha_nac  |
++------------+--------+------------+------------+------------+
+|          1 | Diego  | Escarcega  | Avila      | 2005-04-04 |
++------------+--------+------------+------------+------------+
+1 row in set (0.0013 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > insert into persona value(1, "Diego", "Escarcega", "Avila", "2005-04-04");
+ERROR: 1062 (23000): Duplicate entry '1' for key 'persona.PRIMARY'
+ MySQL  localhost:3306 ssl  t1  SQL > insert into persona value(2, "Diego", "Escarcega", "Avila", "2005-04-04");
+Query OK, 1 row affected (0.0094 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > select * from Persona;
++------------+--------+------------+------------+------------+
+| id_persona | nombre | ap_paterno | ap_materno | fecha_nac  |
++------------+--------+------------+------------+------------+
+|          1 | Diego  | Escarcega  | Avila      | 2005-04-04 |
+|          2 | Diego  | Escarcega  | Avila      | 2005-04-04 |
++------------+--------+------------+------------+------------+
+2 rows in set (0.0010 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > insert into persona(nombre, ap_paterno, fecha_nac)
+                                   -> value("Pedro", "Paramo", "1920-10-23");
+Query OK, 1 row affected (0.0104 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > select * from Persona;
++------------+--------+------------+------------+------------+
+| id_persona | nombre | ap_paterno | ap_materno | fecha_nac  |
++------------+--------+------------+------------+------------+
+|          1 | Diego  | Escarcega  | Avila      | 2005-04-04 |
+|          2 | Diego  | Escarcega  | Avila      | 2005-04-04 |
+|          3 | Pedro  | Paramo     | NULL       | 1920-10-23 |
++------------+--------+------------+------------+------------+
+3 rows in set (0.0011 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > insert into persona(nombre, ap_paterno, fecha_nac) value("Paramo", "1920-10-23");
+ERROR: 1136 (21S01): Column count doesn't match value count at row 1
+ MySQL  localhost:3306 ssl  t1  SQL > insert into persona(ap_paterno, fecha_nac) value("Paramo", "1920-10-23");
+ERROR: 1364 (HY000): Field 'nombre' doesn't have a default value
+ MySQL  localhost:3306 ssl  t1  SQL > desc persona;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| id_persona | int         | NO   | PRI | NULL    | auto_increment |
+| nombre     | varchar(50) | NO   |     | NULL    |                |
+| ap_paterno | varchar(50) | NO   |     | NULL    |                |
+| ap_materno | varchar(50) | YES  |     | NULL    |                |
+| fecha_nac  | date        | NO   |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.0026 sec)
+
+
+
+
+
+
+
+
+
+

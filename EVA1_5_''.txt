@@ -1,0 +1,181 @@
+EVA1_5_''
+
+ MySQL  localhost:3306 ssl  t1  SQL > show tables;
++----------------+
+| Tables_in_t1   |
++----------------+
+| actor_copia    |
+| copia_persona  |
+| customer_copia |
+| persona        |
+| vehiculo       |
++----------------+
+5 rows in set (0.0083 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > create table playera(
+                                   -> id_playera int not null key auto_increment,
+                                   -> marca varchar(50) not null,
+                                   -> modelo varchar(50) not null,
+                                   -> color varchar (50) not null,
+                                   -> talla varchar (50));
+Query OK, 0 rows affected (0.0218 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > insert into playera(marca, modelo, color, talla)
+                                   -> values ("STWD","1101","Rojo","S"),("STWD","2655","Verde","Chica"),("XXX","5566","Rojo","XL"),("XXX","5566","Negro","XL");
+Query OK, 4 rows affected (0.0088 sec)
+
+Records: 4  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t1  SQL > select * from playera;
++------------+-------+--------+-------+-------+
+| id_playera | marca | modelo | color | talla |
++------------+-------+--------+-------+-------+
+|          1 | STWD  | 1101   | Rojo  | S     |
+|          2 | STWD  | 2655   | Verde | Chica |
+|          3 | XXX   | 5566   | Rojo  | XL    |
+|          4 | XXX   | 5566   | Negro | XL    |
++------------+-------+--------+-------+-------+
+4 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > drop table playera;
+Query OK, 0 rows affected (0.0124 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > create table playera( id_playera int not null auto-increment, marca varchar(50) not null, modelo varchar(50) ,color varchar(50) not null, talla enum ("XS", "S", "M", "L", "XL"));
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'auto-increment, marca varchar(50) not null, modelo varchar(50) ,color varchar(50' at line 1
+ MySQL  localhost:3306 ssl  t1  SQL > create table playera( id_playera int not null key auto-increment, marca varchar(50) not null, modelo varchar(50) ,color varchar(50) not null, talla enum ("XS", "S", "M", "L", "XL"));
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'auto-increment, marca varchar(50) not null, modelo varchar(50) ,color varchar(50' at line 1
+ MySQL  localhost:3306 ssl  t1  SQL > create table playera( id_playera int not null key auto_increment, marca varchar(50) not null, modelo varchar(50) ,color varchar(50) not null, talla enum ("XS", "S", "M", "L", "XL"));
+Query OK, 0 rows affected (0.0166 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > desc playera;
++------------+-----------------------------+------+-----+---------+----------------+
+| Field      | Type                        | Null | Key | Default | Extra          |
++------------+-----------------------------+------+-----+---------+----------------+
+| id_playera | int                         | NO   | PRI | NULL    | auto_increment |
+| marca      | varchar(50)                 | NO   |     | NULL    |                |
+| modelo     | varchar(50)                 | YES  |     | NULL    |                |
+| color      | varchar(50)                 | NO   |     | NULL    |                |
+| talla      | enum('XS','S','M','L','XL') | YES  |     | NULL    |                |
++------------+-----------------------------+------+-----+---------+----------------+
+5 rows in set (0.0046 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > insert into playera(marca, modelo, color, talla) values ("STWD","1101","Rojo","S"),("STWD","2655","Verde","Chica"),("XXX","5566","Rojo","XL"),("XXX","5566","Negro","XL");
+ERROR: 1265 (01000): Data truncated for column 'talla' at row 2
+ MySQL  localhost:3306 ssl  t1  SQL > insert into playera(marca, modelo, color, talla) values ("STWD","1101","Rojo","S"),("STWD","2655","Verde","S"),("XXX","5566","Rojo","XL"),("XXX","5566","Negro","XL");
+Query OK, 4 rows affected (0.0090 sec)
+
+Records: 4  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t1  SQL > select * from playera;
++------------+-------+--------+-------+-------+
+| id_playera | marca | modelo | color | talla |
++------------+-------+--------+-------+-------+
+|          5 | STWD  | 1101   | Rojo  | S     |
+|          6 | STWD  | 2655   | Verde | S     |
+|          7 | XXX   | 5566   | Rojo  | XL    |
+|          8 | XXX   | 5566   | Negro | XL    |
++------------+-------+--------+-------+-------+
+4 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > create table empleado(
+                                   -> id_empleado int not null key auto_increment,
+                                   -> nombre varchar(50) not null,
+                                   -> apellido varchar(50) not null,
+                                   -> salario decimal(10,2) check(salario > 0));
+Query OK, 0 rows affected (0.0170 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > desc empleado
+                                   -> ;
++-------------+---------------+------+-----+---------+----------------+
+| Field       | Type          | Null | Key | Default | Extra          |
++-------------+---------------+------+-----+---------+----------------+
+| id_empleado | int           | NO   | PRI | NULL    | auto_increment |
+| nombre      | varchar(50)   | NO   |     | NULL    |                |
+| apellido    | varchar(50)   | NO   |     | NULL    |                |
+| salario     | decimal(10,2) | YES  |     | NULL    |                |
++-------------+---------------+------+-----+---------+----------------+
+4 rows in set (0.0021 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > insert into empleado (nombre, apellido, salario)
+                                   -> values("Diego", "Escarcega", 0);
+ERROR: 3819 (HY000): Check constraint 'empleado_chk_1' is violated.
+ MySQL  localhost:3306 ssl  t1  SQL > show create table empleado;
++----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                                                                                                                                                               |
++----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| empleado | CREATE TABLE `empleado` (
+  `id_empleado` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  `apellido` varchar(50) NOT NULL,
+  `salario` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`id_empleado`),
+  CONSTRAINT `empleado_chk_1` CHECK ((`salario` > 0))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0033 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > insert into empleado (nombre, apellido, salario) values ("Diego", "Escarcega", 100.20);
+Query OK, 1 row affected (0.0021 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > select * from empleados;
+ERROR: 1146 (42S02): Table 't1.empleados' doesn't exist
+ MySQL  localhost:3306 ssl  t1  SQL > select * from empleado;
++-------------+--------+-----------+---------+
+| id_empleado | nombre | apellido  | salario |
++-------------+--------+-----------+---------+
+|           1 | Diego  | Escarcega |  100.20 |
++-------------+--------+-----------+---------+
+1 row in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > show tables;
++----------------+
+| Tables_in_t1   |
++----------------+
+| actor_copia    |
+| copia_persona  |
+| customer_copia |
+| empleado       |
+| persona        |
+| playera        |
+| vehiculo       |
++----------------+
+7 rows in set (0.0016 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > drop table vehiculo;
+Query OK, 0 rows affected (0.0110 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > create table vehiculo(
+                                   -> id_vehiculo int not null key auto_increment,
+                                   -> marca enum ("Audi", "VW", "Mercedes", "Ford", "Nissan"),
+                                   -> color enum ("Rojo", "Negro", "Plateado", "Blanco"),
+                                   -> modelo varchar(50),
+                                   -> precio int check(0<precio<1000000);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 6
+ MySQL  localhost:3306 ssl  t1  SQL > create table vehiculo( id_vehiculo int not null key auto_increment, marca enum ("Audi", "VW", "Mercedes", "Ford", "Nissan"), color enum ("Rojo", "Negro", "Plateado", "Blanco"), modelo varchar(50),  precio int check(0<precio<1000000));
+Query OK, 0 rows affected (0.0161 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > desc vehiculo:
+                                   -> ^C
+ MySQL  localhost:3306 ssl  t1  SQL > desc vehiculo;
++-------------+----------------------------------------------+------+-----+---------+----------------+
+| Field       | Type                                         | Null | Key | Default | Extra          |
++-------------+----------------------------------------------+------+-----+---------+----------------+
+| id_vehiculo | int                                          | NO   | PRI | NULL    | auto_increment |
+| marca       | enum('Audi','VW','Mercedes','Ford','Nissan') | YES  |     | NULL    |                |
+| color       | enum('Rojo','Negro','Plateado','Blanco')     | YES  |     | NULL    |                |
+| modelo      | varchar(50)                                  | YES  |     | NULL    |                |
+| precio      | int                                          | YES  |     | NULL    |                |
++-------------+----------------------------------------------+------+-----+---------+----------------+
+5 rows in set (0.0024 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > insert into vehiculo (marca, color, modelo, precio) value("VW", "Negro", "Caribe", 40000);
+Query OK, 1 row affected (0.0102 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > insert into vehiculo (marca, color, modelo, precio) value("VW", "Azul", "Caribe", 2000000);
+ERROR: 1265 (01000): Data truncated for column 'color' at row 1
+ MySQL  localhost:3306 ssl  t1  SQL > insert into vehiculo (marca, color, modelo, precio) value("VW", "Blanco", "Caribe", 2000000);
+Query OK, 1 row affected (0.0094 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > select * from vehiculo;
++-------------+-------+--------+--------+---------+
+| id_vehiculo | marca | color  | modelo | precio  |
++-------------+-------+--------+--------+---------+
+|           1 | VW    | Negro  | Caribe |   40000 |
+|           2 | VW    | Blanco | Caribe | 2000000 |
++-------------+-------+--------+--------+---------+
+2 rows in set (0.0013 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > show create table vehiculo;
++----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
++----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| vehiculo | CREATE TABLE `vehiculo` (
+  `id_vehiculo` int NOT NULL AUTO_INCREMENT,
+  `marca` enum('Audi','VW','Mercedes','Ford','Nissan') DEFAULT NULL,
+  `color` enum('Rojo','Negro','Plateado','Blanco') DEFAULT NULL,
+  `modelo` varchar(50) DEFAULT NULL,
+  `precio` int DEFAULT NULL,
+  PRIMARY KEY (`id_vehiculo`),
+  CONSTRAINT `vehiculo_chk_1` CHECK (((0 < `precio`) < 1000000))
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0012 sec)

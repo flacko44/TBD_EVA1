@@ -1,0 +1,222 @@
+EVA1_6_'ALTER_TABLE'
+
+ MySQL  localhost:33060+ ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| t1                 |
+| t1_copia           |
+| world              |
++--------------------+
+8 rows in set (0.0013 sec)
+ MySQL  localhost:33060+ ssl  SQL > create table vehiculo( id_vehiculo int not null key auto_increment, marca enum ("Audi", "VW", "Mercedes", "Ford", "Nissan"), color enum ("Rojo", "Negro", "Plateado", "Blanco"), modelo varchar(50),  precio int check(0<precio|precio<1000000));
+ERROR: 1046: No database selected
+ MySQL  localhost:33060+ ssl  SQL > use t1;
+Default schema set to `t1`.
+Fetching global names, object names from `t1` for auto-completion... Press ^C to stop.
+ MySQL  localhost:33060+ ssl  t1  SQL > show tables;
++----------------+
+| Tables_in_t1   |
++----------------+
+| actor_copia    |
+| copia_persona  |
+| customer_copia |
+| empleado       |
+| persona        |
+| playera        |
+| vehiculo       |
++----------------+
+7 rows in set (0.0018 sec)
+ MySQL  localhost:33060+ ssl  t1  SQL > desc persona;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| id_persona | int         | NO   | PRI | NULL    | auto_increment |
+| nombre     | varchar(50) | NO   |     | NULL    |                |
+| ap_paterno | varchar(50) | NO   |     | NULL    |                |
+| ap_materno | varchar(50) | YES  |     | NULL    |                |
+| fecha_nac  | date        | NO   |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.0034 sec)
+ MySQL  localhost:33060+ ssl  t1  SQL > create table persona_mod(
+                                     -> id int not null key auto_increment,
+                                     -> nombre varchar(10) not null,
+                                     -> desc persona;^C
+ MySQL  localhost:33060+ ssl  t1  SQL > create table persona_mod(
+                                     -> id int not null jey auto_increment,
+                                     -> nombre varchar(10),
+                                     -> apellido varchar(10));
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'jey auto_increment,
+nombre varchar(10),
+apellido varchar(10))' at line 2
+ MySQL  localhost:33060+ ssl  t1  SQL > create table persona_mod( id int not null key auto_increment, nombre varchar(10), apellido varchar(10));
+Query OK, 0 rows affected (0.0209 sec)
+ MySQL  localhost:33060+ ssl  t1  SQL > desc persona_mod;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| id       | int         | NO   | PRI | NULL    | auto_increment |
+| nombre   | varchar(10) | YES  |     | NULL    |                |
+| apellido | varchar(10) | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+3 rows in set (0.0026 sec)
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table persona_mod
+                                     -> add fecha_nac date not null after id;
+Query OK, 0 rows affected (0.0352 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  t1  SQL > desc persona_mod;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| id        | int         | NO   | PRI | NULL    | auto_increment |
+| fecha_nac | date        | NO   |     | NULL    |                |
+| nombre    | varchar(10) | YES  |     | NULL    |                |
+| apellido  | varchar(10) | YES  |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0032 sec)
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table persona_mod
+                                     -> drop fecha_nac;
+Query OK, 0 rows affected (0.0296 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  t1  SQL > desc persona_mod;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| id       | int         | NO   | PRI | NULL    | auto_increment |
+| nombre   | varchar(10) | YES  |     | NULL    |                |
+| apellido | varchar(10) | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+3 rows in set (0.0034 sec)
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table persona_mod add fecha_nac date not null;
+Query OK, 0 rows affected (0.0316 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  t1  SQL > desc persona_mod;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| id        | int         | NO   | PRI | NULL    | auto_increment |
+| nombre    | varchar(10) | YES  |     | NULL    |                |
+| apellido  | varchar(10) | YES  |     | NULL    |                |
+| fecha_nac | date        | NO   |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0023 sec)
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table persona_mod
+                                     -> rename column id to id_persona;
+Query OK, 0 rows affected (0.0135 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  t1  SQL > desc persona_mod;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| id_persona | int         | NO   | PRI | NULL    | auto_increment |
+| nombre     | varchar(10) | YES  |     | NULL    |                |
+| apellido   | varchar(10) | YES  |     | NULL    |                |
+| fecha_nac  | date        | NO   |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0025 sec)
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table persona_mod
+                                     -> change nombre nombre varchar(50) not null;
+Query OK, 0 rows affected (0.0304 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  t1  SQL > desc persona_mod;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| id_persona | int         | NO   | PRI | NULL    | auto_increment |
+| nombre     | varchar(50) | NO   |     | NULL    |                |
+| apellido   | varchar(10) | YES  |     | NULL    |                |
+| fecha_nac  | date        | NO   |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0026 sec)
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table persona_mod
+                                     -> change apellido apellido_pat varchar(50) not null;
+Query OK, 0 rows affected (0.0290 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table persona_mod
+                                     -> add apellido_mat varchar(50) not null after apellido_pat;
+Query OK, 0 rows affected (0.0284 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  t1  SQL > desc persona_mod;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| id_persona   | int         | NO   | PRI | NULL    | auto_increment |
+| nombre       | varchar(50) | NO   |     | NULL    |                |
+| apellido_pat | varchar(50) | NO   |     | NULL    |                |
+| apellido_mat | varchar(50) | NO   |     | NULL    |                |
+| fecha_nac    | date        | NO   |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.0020 sec)
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table persona_mod rename to persona_modificada;
+Query OK, 0 rows affected (0.0144 sec)
+ MySQL  localhost:33060+ ssl  t1  SQL > show tables;
++--------------------+
+| Tables_in_t1       |
++--------------------+
+| actor_copia        |
+| copia_persona      |
+| customer_copia     |
+| empleado           |
+| persona            |
+| persona_modificada |
+| playera            |
+| vehiculo           |
++--------------------+
+8 rows in set (0.0021 sec)
+ MySQL  localhost:33060+ ssl  t1  SQL > create table estudiante(
+                                     -> id_es int,
+                                     -> nombre varchar(10),
+                                     -> apellidos varchar(50) not null,
+                                     -> carrera varchar(50));
+Query OK, 0 rows affected (0.0227 sec)
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table estudiantes
+                                     -> change id_es id_estudiante int not null key auto_increment;
+ERROR: 1146: Table 't1.estudiantes' doesn't exist
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table estudiante change id_es id_estudiante int not null key auto_increment;
+Query OK, 0 rows affected (0.0378 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table estudiante add fecha_nac date not null after apellidos;
+Query OK, 0 rows affected (0.0281 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table estudiante change apellidos apellido_pat varchar(50) not null;
+Query OK, 0 rows affected (0.0127 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table estudiante add apellido_mat varchar(50) after apelldio_pat;
+ERROR: 1054: Unknown column 'apelldio_pat' in 'estudiante'
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table estudiante add apellido_mat varchar(50) after apellido_pat;
+Query OK, 0 rows affected (0.0290 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table estudiante change nombre nombre varchar(50) not null;
+Query OK, 0 rows affected (0.0380 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  t1  SQL > alter table estudiante rename to matricula;
+Query OK, 0 rows affected (0.0131 sec)
+ MySQL  localhost:33060+ ssl  t1  SQL > desc matricula;
++---------------+-------------+------+-----+---------+----------------+
+| Field         | Type        | Null | Key | Default | Extra          |
++---------------+-------------+------+-----+---------+----------------+
+| id_estudiante | int         | NO   | PRI | NULL    | auto_increment |
+| nombre        | varchar(50) | NO   |     | NULL    |                |
+| apellido_pat  | varchar(50) | NO   |     | NULL    |                |
+| apellido_mat  | varchar(50) | YES  |     | NULL    |                |
+| fecha_nac     | date        | NO   |     | NULL    |                |
+| carrera       | varchar(50) | YES  |     | NULL    |                |
++---------------+-------------+------+-----+---------+----------------+
+6 rows in set (0.0028 sec)
